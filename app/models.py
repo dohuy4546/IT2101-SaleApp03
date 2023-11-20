@@ -1,7 +1,12 @@
 from flask_login import UserMixin
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, Boolean
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, Boolean, Enum
 from sqlalchemy.orm import relationship
 from app import db, app
+import enum
+
+class UserRoleEnum(enum.Enum):
+    USER = 1
+    ADMIN = 2
 
 class Category(db.Model):
     __tablename__ = 'category'
@@ -30,13 +35,19 @@ class User(db.Model, UserMixin):
     username = Column(String(50), nullable=False, unique=True)
     password = Column(String(50), nullable=False)
     avatar = Column(String(100), default='https://res.cloudinary.com/dxxwcby8l/image/upload/v1688179242/hclq65mc6so7vdrbp7hz.jpg')
+    user_role = Column(Enum(UserRoleEnum), default=UserRoleEnum.USER)
+
+    def __str__(self):
+        return self.name
 
 if __name__ == "__main__":
     with app.app_context():
-        # db.create_all()
+        #db.create_all()
         import hashlib
-        u = User(name='Admin', username='admin', password=str(hashlib.md5('12345'.encode('utf-8')).hexdigest()))
-        # c1 = Category(name='Mobile')
+        u = User(name='Admin', username='admin', password=str(hashlib.md5('12345'.encode('utf-8')).hexdigest()), user_role=UserRoleEnum.ADMIN)
+        db.session.add(u)
+        db.session.commit()
+        #c1 = Category(name='Mobile')
         # c2 = Category(name='Tablet')
         # c3 = Category(name='Desktop')
         # db.session.add_all([c1, c2, c3])
