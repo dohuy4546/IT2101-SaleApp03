@@ -42,11 +42,12 @@ class User(db.Model, UserMixin):
 
 if __name__ == "__main__":
     with app.app_context():
+        pass
         #db.create_all()
-        import hashlib
-        u = User(name='Admin', username='admin', password=str(hashlib.md5('12345'.encode('utf-8')).hexdigest()), user_role=UserRoleEnum.ADMIN)
-        db.session.add(u)
-        db.session.commit()
+        # import hashlib
+        # u = User(name='Admin', username='admin', password=str(hashlib.md5('12345'.encode('utf-8')).hexdigest()), user_role=UserRoleEnum.ADMIN)
+        # db.session.add(u)
+        # db.session.commit()
         #c1 = Category(name='Mobile')
         # c2 = Category(name='Tablet')
         # c3 = Category(name='Desktop')
